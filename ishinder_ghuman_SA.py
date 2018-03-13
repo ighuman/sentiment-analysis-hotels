@@ -1,17 +1,6 @@
 
 # coding: utf-8
 
-# ### Q1. Sentiment Analysis and Aggregation
-# (a) Compute average Vader sentiment and average ground truth rating per item.
-# 
-# (b) Rank items by
-# 
-# (i) Average Ground Truth Sentiment
-# 
-# (ii) Average Vader Compound Sentiment Score
-# 
-# Show both top-5 and bottom-5 for both ranking methods. Do they agree or are there interesting differences?
-# They agree for the most part barring the order of the hotels.
 
 # In[1]:
 
@@ -43,7 +32,7 @@ from nltk.corpus import stopwords
 # In[4]:
 
 #Read in from pandas
-hotelDf = pandas.read_csv('/resources/data/brampton.csv')
+hotelDf = pandas.read_csv('filePath')
 hotelDf.columns=['idNum','filePath','hotelName','reviewColumn','ratingScore','groundTruth']
 
 
@@ -206,14 +195,6 @@ hotelRatingDfVd.columns=['hotelName','avgVaderScore']
 hotelRatingDfVd.sort_values('avgVaderScore',ascending=12).head(5)
 
 
-# # 2
-# ### Q2. Frequency Analysis
-# (a) Use term frequency of the words for (i) positive reviews and (ii) negative with both ground truth sentiment and Vader-based sentiment to rank the top-50 most frequent non-stopwords in the review collection. Do you note anything interesting and/or locale-specific about these topranked words? Are there any interesting differences between the top-ranked words according to the ground truth vs. Vader sentiment?
-# 
-# (A) There arent any significant differences other than the freqency of words when it comes to top ranked words according to ground truth vs. vader sentiment. Vader sentiment had more positive words and less negative words than ground truth sentiment.   
-# 
-# (b) Repeat this analysis for the top reviewed hotel and the bottom reviewed hotel (top and bottom according to star rating).
-
 # In[25]:
 
 #We are only intereseted in this three column for overall analysis
@@ -316,19 +297,6 @@ topk_bh = counter.most_common(k)
 topk_bh
 
 
-# # 3
-# ### Q3. Mutual Information
-# (a) Use mutual information (MI) with both ground truth sentiment and Vader-based sentiment to rank the top-50 most sentiment-bearing non-stopwords in the review collection. Do you note anything interesting and/or locale-specific about these top-ranked words? Are there any
-# interesting differences between the top-ranked words according to the ground truth vs. Vader sentiment?
-# 
-# MI was high for negative words for both higher rated ground truth sentiment and vader sentiment.
-# the mutual dependence between the two variables. More specifically, it quantifies the "amount of information" (in units such as bits) obtained about one random variable, through the other random variable.
-# 
-# 
-# (b) Repeat this analysis for the top reviewed hotel and the bottom reviewed hotel (top and bottom according to star rating).
-# 
-# there werent enough reviews for the botteom rated hotel to make much sense of the words that came up with MI.
-# for the top rated hotel the words for gt and vader sentiment were quuite similar and they were positive words which reflects on the hotel being one of the better ones in the city
 
 # In[35]:
 
@@ -468,19 +436,6 @@ miScoredf_bh_v.columns = ['Word','MI Score']
 miScoredf_bh_v.head(50)
 
 
-# # 4
-# ### Q4. Pointwise Mutual Information
-# (a) For both ground truth and Vader-based sentiment, calculate the top-50 words according to PMI of the word occuring with (i) positive reviews and (ii) negative reviews. Note that there are four combinations in total. Do you note anything interesting and/or locale-specific about these top-ranked words? Are there any interesting differences between the top-ranked words according to ground truth vs. Vader sentiment? Which of ground truth or Vader sentiment seem to provide more reasonable lists for (i) and (ii)?
-# 
-# a) For positive reviews ground truth provides a better list, and for the negative reviews vader sentiment seems to provide more reasonable list.
-# 
-# it refers to single events, whereas MI refers to the average of all possible events.
-# 
-# joint probability at top, independent at bottom
-# 
-# (b) Repeat this analysis for the top reviewed hotel and the bottom reviewed hotel (top and bottom according to star rating).
-# 
-# b)repeating this analysis for the top reviewed and the bottom reviewed hotel provided with infinite, positive and negative pmi scores. The infinite pmi can be ascribed to the word not occuring in the top, the positive can be attributed to the word occuring enough times in the respective lists, and the negative pmi score can be the attributed to the word occuring less times than expected. 
 
 # In[47]:
 
@@ -770,51 +725,6 @@ pmiposlist_ht_bt.sort_values('pmi',ascending=0).head(500).as_matrix()
 pmineglist_ht_bt.sort_values('pmi',ascending=0).head(500).as_matrix()
 
 
-# # 5
-# ###Q5. General Plots
-# (a) Histogram
-# 
-# (a) Show separate histograms of ground truth and Vader sentiment scores per item. Do you
-# notice any interesting differences?
-# 
-# for both vader and ground truth we ascertain that most of the reviews are given for the hotels with a higher rating score or vader senitment which relates to the way the number of reviews are found in the .csv file. 
-# 
-# (b) Show histogram of number of reviews per item. Do you notice any interesting trends?
-# Are these expected?
-# 
-# (b) Boxplots
-# 
-# (a) In two plots, one for ground truth star rating and one for Vader sentiment, show a plot
-# of 5 side-by-side boxplots of these scores.
-# 
-# (b) Report the mean and variance of the ground truth and Vader sentiment scores for the
-# top-5 ranked hotels according to star rating.
-# 
-# (c) Which do you find more informative, the boxplots or the mean and variance, or are they
-# equally informative? Why?
-# 
-# I found the boxplots to be more informative than the mean and variance as mean and variance assume that the distribution of data follows a gaussian curve which might not always be the case as depicted by the box-plots. 
-# 
-# (c) Scatterplots
-# 
-# (a) Show a scatterplot of ground truth score (star rating) versus Vader sentiment score. Do
-# you notice anything interesting? What does this tell you about star ratings vs. Vader
-# sentiment scores? What does this tell you about human ratings and/or Vader sentiment
-# analysis?
-# 
-# the results for the 5 star rating and a high vader score is the only place where this scatter plot corelates the vader sentiment and ground truth on the same page. for every other case the vader sentiment is skewed all over its range.
-# 
-# (b) Show two scatterplots of the length of reviews versus each of ground truth score and
-# Vader sentiment score. Are there any trends?
-# 
-# the length of reviews for the ground truth seem to have a uniform length over different rating scores. vader sentiment however has a higher length of reviews towards its extremes which is either 1 or -1. 
-# 
-# (c) Show two scatterplots of the number of reviews per item versus each of average ground
-# truth score and average Vader sentiment score. Are there any trends?
-# 
-# the number of reviews are higher for the better rated hotels in both cases. 
-
-# In[75]:
 
 import matplotlib.pyplot as plt
 import numpy as np
